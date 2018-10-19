@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 
 import { Form, Spacer, FormButton, ErrorText } from './Styled'
-import { capitalize } from './helpers';
+import { capitalize } from '../helpers';
 
 
 class CellForm extends Component {
@@ -19,6 +19,7 @@ class CellForm extends Component {
         let data = {};
         props.fields.map(item=>{
             data[item.name] = (props.data && (item.name in props.data)) ? props.data[item.name] : item.default;
+            return null;
         });
 
         this.state = {
@@ -35,7 +36,7 @@ class CellForm extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.activeTab != this.props.activeTab) {
+        if (nextProps.activeTab !== this.props.activeTab) {
             let data = {};
             nextProps.fields.map(item=>{
                 data[item.name] = (nextProps.data && (item.name in nextProps.data)) ? nextProps.data[item.name] : item.default;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Block from './src/Block'
+import Block from './components/Block'
 import Dragula from 'react-dragula';
-import { EditorWrap, LocalContainer, AddBlockButton, ToolsWrap, Tool } from './src/Styled'
+import { EditorWrap, LocalContainer, AddBlockButton, ToolsWrap, Tool } from './components/Styled'
 
 import { injectGlobal } from 'styled-components'
 injectGlobal`

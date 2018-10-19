@@ -15,13 +15,13 @@ const CellRenderer = (props) => {
             content = <ImageCell {...props.cell.params} />; 
             break;
 
-        case 'text': 
-            content = <TextCell {...props.cell.params} />; 
-            break;
-
         case 'video': 
             content = <VideoCell {...props.cell.params} />; 
             break; 
+        
+        case 'text': 
+        default: 
+            content = <TextCell {...props.cell.params} />; 
     }
     const { openCell, modifyCell, ic, ir, is } = props;
     // render
@@ -41,7 +41,7 @@ export default CellRenderer;
 const ImageCell = (props) => {
     let ratioParts = props.ratio.split(':'),
         height = 100 * ratioParts[1] / ratioParts[0],
-        align = props.align == 'center' ? 'none' : props.align;
+        align = props.align === 'center' ? 'none' : props.align;
 
     return (
         <RenderedCellWrap {...props}>
@@ -63,7 +63,7 @@ const ImageCell = (props) => {
  * 
  */
 const TextCell = (props) => {
-    let align = props.align == 'center' ? 'none' : props.align,
+    let align = props.align === 'center' ? 'none' : props.align,
         columnSize = 100 / +props.columns;
     return (
         <RenderedTextCellWrap {...props}>
@@ -88,7 +88,7 @@ const TextCell = (props) => {
 const VideoCell = (props) => {
     let ratioParts = props.ratio.split(':'),
         height = 100 * ratioParts[1] / ratioParts[0],
-        align = props.align == 'center' ? 'none' : props.align;
+        align = props.align === 'center' ? 'none' : props.align;
 
     return (
         <RenderedCellWrap {...props}>
