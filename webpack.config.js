@@ -22,7 +22,7 @@ module.exports = {
   mode: isProduction ? 'production' : 'development',
   entry: {
     app: [
-      './src/dev.js'
+      './dev.js'
     ]
   },
   output: {

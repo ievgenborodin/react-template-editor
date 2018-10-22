@@ -1,1 +1,1 @@
-export {default} from './src/TemplateEditor'
+export {default} from './dist/TemplateEditor'
