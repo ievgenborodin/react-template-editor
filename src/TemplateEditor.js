@@ -168,7 +168,7 @@ class TemplateEditor extends Component {
         const { blocks, isReorderMode, isResizeMode } = this.state;
         const { saveBlock, addBlock, removeBlock, handleSync, disableResizeMode } = this;
         const { theme } = this.props;
-
+        console.log('str', this.props);
         return (
             <EditorWrap>
                 <ToolsWrap>
@@ -204,5 +204,30 @@ class TemplateEditor extends Component {
         )
     }
 }
+
+TemplateEditor.defaultProps = {
+    theme: {
+        colors: {
+            primary: '#3f2b4f',
+            secondary: '#b40766',
+            textDark: '#333',
+            textLight: '#eee',
+            textSuccess: '#137913',
+            textError: '#ef3846'    
+        },
+        fonts: {
+            h1Family: 'Roboto',
+            h2Family: 'Roboto',
+            h3Family: 'Roboto',
+            h4Family: 'Roboto',
+            h5Family: 'Roboto',
+            h6Family: 'Roboto',
+            pFamily: 'Roboto'
+        }
+    },
+    structure: null,
+    onChange: (data) => {console.log('structure data: ', data)}
+};
+
 
 export default TemplateEditor
