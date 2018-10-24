@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import styledNormalize from 'styled-normalize'
 import { injectGlobal } from 'styled-components'
 import styled, { css } from 'styled-components'
-import TemplateEditor from './index'
+import TemplateEditor from './src/TemplateEditor'
 
 // material ui typography fix
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;

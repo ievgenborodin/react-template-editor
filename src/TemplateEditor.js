@@ -168,7 +168,6 @@ class TemplateEditor extends Component {
         const { blocks, isReorderMode, isResizeMode } = this.state;
         const { saveBlock, addBlock, removeBlock, handleSync, disableResizeMode } = this;
         const { theme } = this.props;
-        console.log('str', this.props);
         return (
             <EditorWrap>
                 <ToolsWrap>

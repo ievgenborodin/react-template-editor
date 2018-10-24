@@ -92,8 +92,9 @@ class Block extends Component {
 
 
     updateCellResizeBars(newVals) {
-        let newSizes = [],
-            tempArr = [0, ...(Array.isArray(newVals) ? newVals : [newVals]), 100];
+        let valsArr = Array.isArray(newVals) ? newVals : [newVals],
+            newSizes = [],
+            tempArr = [0, ...valsArr, 100];
         
         for(var i=1; i<tempArr.length; i++)
             newSizes.push(tempArr[i] - tempArr[i-1]);
@@ -109,16 +110,17 @@ class Block extends Component {
         this.setState({
             cellResizePointers: newVals,
             columns: newColumns
-        })
+        },this.sync)
     }
 
 
     updateColumnResizeBars(newVals) {
-        if (Math.min(...newVals) <= 1)
+        let valsArr = Array.isArray(newVals) ? newVals : [newVals];
+        if (Math.min(...valsArr) <= 1)
             return false;
 
         let newSizes = [],
-            tempArr = [0, ...(Array.isArray(newVals) ? newVals : [newVals]), 100];
+            tempArr = [0, ...valsArr, 100];
         
         for(var i=1; i<tempArr.length; i++)
             newSizes.push(tempArr[i] - tempArr[i-1]);
@@ -129,7 +131,7 @@ class Block extends Component {
         this.setState({
             resizePointers: newVals,
             columnSizes: newSizes 
-        })
+        },this.sync)
     }
 
 
@@ -241,7 +243,7 @@ class Block extends Component {
         
         let newColumn = [], 
             newColumnSizes, newColumnSize;
-      
+
         if (cells.length > 1) {
             // recount column sizes on one column removal
             let newCellSize = 100 / (cellSizes.length-1);

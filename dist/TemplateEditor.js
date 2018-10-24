@@ -196,17 +196,16 @@ function (_Component) {
           handleSync = this.handleSync,
           disableResizeMode = this.disableResizeMode;
       var theme = this.props.theme;
-      console.log('str', this.props);
       return React.createElement(EditorWrap, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 173
+          lineNumber: 172
         },
         __self: this
       }, React.createElement(ToolsWrap, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 174
+          lineNumber: 173
         },
         __self: this
       }, React.createElement(Tool, {
@@ -219,7 +218,7 @@ function (_Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 175
+          lineNumber: 174
         },
         __self: this
       }), React.createElement(Tool, {
@@ -232,14 +231,14 @@ function (_Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 179
+          lineNumber: 178
         },
         __self: this
       })), React.createElement("div", {
         ref: "dragulaWrap",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 185
+          lineNumber: 184
         },
         __self: this
       }, blocks.map(function (block) {
@@ -248,7 +247,7 @@ function (_Component) {
           "data-id": block.id,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 187
+            lineNumber: 186
           },
           __self: this
         }, React.createElement(Block, Object.assign({
@@ -265,14 +264,14 @@ function (_Component) {
           onSync: handleSync,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 188
+            lineNumber: 187
           },
           __self: this
         })));
       })), React.createElement(LocalContainer, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 200
+          lineNumber: 199
         },
         __self: this
       }, React.createElement(AddBlockButton, {
@@ -282,7 +281,7 @@ function (_Component) {
         name: "down",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 201
+          lineNumber: 200
         },
         __self: this
       })));
