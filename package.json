@@ -1,6 +1,6 @@
 {
   "name": "react-template-editor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "React component to generate templates / wireframes. Returns as json.",
   "main": "index.js",
   "scripts": {
