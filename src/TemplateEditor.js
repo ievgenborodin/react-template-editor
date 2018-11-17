@@ -44,7 +44,6 @@ class TemplateEditor extends Component {
 
         this.addBlock = this.addBlock.bind(this)
         this.removeBlock = this.removeBlock.bind(this)
-        this.saveBlock = this.saveBlock.bind(this)
         this.handleSync = this.handleSync.bind(this)
         this.toggleReorderMode = this.toggleReorderMode.bind(this)
         this.disableResizeMode = this.disableResizeMode.bind(this)
@@ -92,21 +91,6 @@ class TemplateEditor extends Component {
         })
     }
 
-
-    /** 
-     * Save Block
-     * 
-     */
-    saveBlock (blockId, json) {
-        const { blocks } = this.state;
-        this.setState({
-            blocks: [
-                ...blocks.slice(0, blockId),
-                json,
-                ...blocks.slice(blockId+1, blocks.length)
-            ]
-        })
-    }    
 
     disableResizeMode () {
         if (this.state.isResizeMode)
@@ -166,7 +150,7 @@ class TemplateEditor extends Component {
 
     render() {
         const { blocks, isReorderMode, isResizeMode } = this.state;
-        const { saveBlock, addBlock, removeBlock, handleSync, disableResizeMode } = this;
+        const { addBlock, removeBlock, handleSync, disableResizeMode } = this;
         const { theme } = this.props;
         return (
             <EditorWrap>
@@ -187,7 +171,6 @@ class TemplateEditor extends Component {
                         <Block {...{isResizeMode, isReorderMode, disableResizeMode, theme}}
                             blockId={block.id} 
                             onDelete={removeBlock} 
-                            onUpdate={saveBlock} 
                             isOnlyBlock={blocks.length > 1 ? false : true} 
                             defaults={block}
                             onSync={handleSync} 

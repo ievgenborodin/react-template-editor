@@ -401,6 +401,8 @@ export const RenderedLabel = styled.span`
 `
 
 export const RenderedCellImage = styled.div`
+    margin-left: auto; 
+    margin-right: auto;
     width: ${props => props.width}%;
     height: 100%;
     display:flex;
@@ -413,11 +415,16 @@ export const RenderedCellImage = styled.div`
 export const RenderedTextLine = styled.div`
     width: 100%;
     clear:both;
+    padding: 5px 0;
     &>div { 
-        margin-top: 5px;
-        margin-bottom: 5px;
+        margin-left: auto; 
+        margin-right: auto;
+        ${props => props.align=='none' ? `
+            margin-top: 5px;
+            margin-bottom: 5px;
+        ` : null}
         width: ${props => props.width}%;
-        height: ${props => props.type=='header' ? '20px' : '3px'};
+        height: ${props => props.type=='header' ? '3rem' : '1rem'};
         display:flex;
         align-items: center;
         background: #666;

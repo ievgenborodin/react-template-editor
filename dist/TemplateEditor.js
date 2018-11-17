@@ -48,7 +48,6 @@ function (_Component) {
     };
     _this.addBlock = _this.addBlock.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.removeBlock = _this.removeBlock.bind(_assertThisInitialized(_assertThisInitialized(_this)));
-    _this.saveBlock = _this.saveBlock.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleSync = _this.handleSync.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.toggleReorderMode = _this.toggleReorderMode.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.disableResizeMode = _this.disableResizeMode.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -103,19 +102,6 @@ function (_Component) {
         blocks: blocks.filter(function (b) {
           return b.id != blockId;
         })
-      });
-    }
-    /** 
-     * Save Block
-     * 
-     */
-
-  }, {
-    key: "saveBlock",
-    value: function saveBlock(blockId, json) {
-      var blocks = this.state.blocks;
-      this.setState({
-        blocks: _toConsumableArray(blocks.slice(0, blockId)).concat([json], _toConsumableArray(blocks.slice(blockId + 1, blocks.length)))
       });
     }
   }, {
@@ -190,8 +176,7 @@ function (_Component) {
           blocks = _this$state.blocks,
           isReorderMode = _this$state.isReorderMode,
           isResizeMode = _this$state.isResizeMode;
-      var saveBlock = this.saveBlock,
-          addBlock = this.addBlock,
+      var addBlock = this.addBlock,
           removeBlock = this.removeBlock,
           handleSync = this.handleSync,
           disableResizeMode = this.disableResizeMode;
@@ -199,13 +184,13 @@ function (_Component) {
       return React.createElement(EditorWrap, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 172
+          lineNumber: 156
         },
         __self: this
       }, React.createElement(ToolsWrap, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 173
+          lineNumber: 157
         },
         __self: this
       }, React.createElement(Tool, {
@@ -218,7 +203,7 @@ function (_Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 174
+          lineNumber: 158
         },
         __self: this
       }), React.createElement(Tool, {
@@ -231,14 +216,14 @@ function (_Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 178
+          lineNumber: 162
         },
         __self: this
       })), React.createElement("div", {
         ref: "dragulaWrap",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 184
+          lineNumber: 168
         },
         __self: this
       }, blocks.map(function (block) {
@@ -247,7 +232,7 @@ function (_Component) {
           "data-id": block.id,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 186
+            lineNumber: 170
           },
           __self: this
         }, React.createElement(Block, Object.assign({
@@ -258,20 +243,19 @@ function (_Component) {
         }, {
           blockId: block.id,
           onDelete: removeBlock,
-          onUpdate: saveBlock,
           isOnlyBlock: blocks.length > 1 ? false : true,
           defaults: block,
           onSync: handleSync,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 187
+            lineNumber: 171
           },
           __self: this
         })));
       })), React.createElement(LocalContainer, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 199
+          lineNumber: 182
         },
         __self: this
       }, React.createElement(AddBlockButton, {
@@ -281,7 +265,7 @@ function (_Component) {
         name: "down",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 200
+          lineNumber: 183
         },
         __self: this
       })));

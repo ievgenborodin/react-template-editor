@@ -11,7 +11,7 @@ function _templateObject40() {
 }
 
 function _templateObject39() {
-  var data = _taggedTemplateLiteral(["\n    width: 100%;\n    clear:both;\n    &>div { \n        margin-top: 5px;\n        margin-bottom: 5px;\n        width: ", "%;\n        height: ", ";\n        display:flex;\n        align-items: center;\n        background: #666;\n        float: ", ";\n    }\n"]);
+  var data = _taggedTemplateLiteral(["\n    width: 100%;\n    clear:both;\n    padding: 5px 0;\n    &>div { \n        margin-left: auto; \n        margin-right: auto;\n        ", "\n        width: ", "%;\n        height: ", ";\n        display:flex;\n        align-items: center;\n        background: #666;\n        float: ", ";\n    }\n"]);
 
   _templateObject39 = function _templateObject39() {
     return data;
@@ -21,7 +21,7 @@ function _templateObject39() {
 }
 
 function _templateObject38() {
-  var data = _taggedTemplateLiteral(["\n    width: ", "%;\n    height: 100%;\n    display:flex;\n    align-items: center;\n    background: #666;\n    float: ", ";\n    ", ";\n"]);
+  var data = _taggedTemplateLiteral(["\n    margin-left: auto; \n    margin-right: auto;\n    width: ", "%;\n    height: 100%;\n    display:flex;\n    align-items: center;\n    background: #666;\n    float: ", ";\n    ", ";\n"]);
 
   _templateObject38 = function _templateObject38() {
     return data;
@@ -504,9 +504,11 @@ export var RenderedCellImage = styled.div(_templateObject38(), function (props) 
   return props.shape == 'round' ? 'border-radius: 50%;' : null;
 });
 export var RenderedTextLine = styled.div(_templateObject39(), function (props) {
+  return props.align == 'none' ? "\n            margin-top: 5px;\n            margin-bottom: 5px;\n        " : null;
+}, function (props) {
   return props.width;
 }, function (props) {
-  return props.type == 'header' ? '20px' : '3px';
+  return props.type == 'header' ? '3rem' : '1rem';
 }, function (props) {
   return props.align;
 });
