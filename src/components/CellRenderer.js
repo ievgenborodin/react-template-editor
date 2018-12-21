@@ -26,7 +26,7 @@ const CellRenderer = (props) => {
     const { openCell, modifyCell, ic, ir, is } = props;
     // render
     return (
-        <CellWrap>
+        <CellWrap {...props.cell.params}>
             <div onClick={e => openCell(e, ic, ir, is, modifyCell)}>{content}</div>      
         </CellWrap>
     )
@@ -65,6 +65,7 @@ const ImageCell = (props) => {
 const TextCell = (props) => {
     let align = props.align === 'center' ? 'none' : props.align,
         columnSize = 100 / +props.columns;
+        console.log('text pr', props)
     return (
         <RenderedTextCellWrap {...props}>
             {Array.from(Array(+props.columns)).map((c,j) => 

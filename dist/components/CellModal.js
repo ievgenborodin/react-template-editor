@@ -21,6 +21,11 @@ var fields = {
     default: '100'
   }, {
     type: "text",
+    label: 'Padding (css)',
+    name: 'padding',
+    default: '0'
+  }, {
+    type: "text",
     label: 'Ratio (w:h)',
     name: 'ratio',
     default: '3:2'
@@ -47,6 +52,11 @@ var fields = {
     label: 'Width (%)',
     name: 'width',
     default: '100'
+  }, {
+    type: "text",
+    label: 'Padding (css)',
+    name: 'padding',
+    default: '0'
   }, {
     type: "select",
     label: 'Align',
@@ -81,6 +91,11 @@ var fields = {
     label: 'Width (%)',
     name: 'width',
     default: '100'
+  }, {
+    type: "text",
+    label: 'Padding (css)',
+    name: 'padding',
+    default: '0'
   }, {
     type: "text",
     label: 'Ratio (w:h)',
@@ -154,7 +169,7 @@ function (_Component) {
       return React.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 64
+          lineNumber: 67
         },
         __self: this
       }, React.createElement(CloseModal, {
@@ -164,13 +179,13 @@ function (_Component) {
         name: "close",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 65
+          lineNumber: 68
         },
         __self: this
       }), React.createElement(TabsWrap, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 68
+          lineNumber: 71
         },
         __self: this
       }, tabs.map(function (name, i) {
@@ -183,7 +198,7 @@ function (_Component) {
           width: tabSize,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 70
+            lineNumber: 73
           },
           __self: this
         }, name);
@@ -195,7 +210,7 @@ function (_Component) {
         onSubmit: this.handleSelect,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 78
+          lineNumber: 81
         },
         __self: this
       })));

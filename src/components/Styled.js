@@ -365,6 +365,8 @@ export const FormButton = styled.button`
 export const CellWrap = styled.div`
     width: 100%;
     position:relative;
+    ${props => props.padding ? `padding: ${props.padding};` : null}
+    &>div { line-height: 0; }
 `
 
 export const RemoveImageButton = styled(Icon)`
@@ -381,6 +383,7 @@ export const RenderedTextCellWrap = styled.div`
     position: relative;
     width: 100%; 
     ${props => props.background ? `background: #bbb;` : null}
+    display:inline-block;
 `
 
 export const RenderedCellWrap = RenderedTextCellWrap.extend`
@@ -416,13 +419,11 @@ export const RenderedTextLine = styled.div`
     width: 100%;
     clear:both;
     padding: 5px 0;
+    display: inline-block;
     &>div { 
         margin-left: auto; 
         margin-right: auto;
-        ${props => props.align=='none' ? `
-            margin-top: 5px;
-            margin-bottom: 5px;
-        ` : null}
+
         width: ${props => props.width}%;
         height: ${props => props.type=='header' ? '3rem' : '1rem'};
         display:flex;

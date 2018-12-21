@@ -11,7 +11,7 @@ function _templateObject40() {
 }
 
 function _templateObject39() {
-  var data = _taggedTemplateLiteral(["\n    width: 100%;\n    clear:both;\n    padding: 5px 0;\n    &>div { \n        margin-left: auto; \n        margin-right: auto;\n        ", "\n        width: ", "%;\n        height: ", ";\n        display:flex;\n        align-items: center;\n        background: #666;\n        float: ", ";\n    }\n"]);
+  var data = _taggedTemplateLiteral(["\n    width: 100%;\n    clear:both;\n    padding: 5px 0;\n    display: inline-block;\n    &>div { \n        margin-left: auto; \n        margin-right: auto;\n\n        width: ", "%;\n        height: ", ";\n        display:flex;\n        align-items: center;\n        background: #666;\n        float: ", ";\n    }\n"]);
 
   _templateObject39 = function _templateObject39() {
     return data;
@@ -61,7 +61,7 @@ function _templateObject35() {
 }
 
 function _templateObject34() {
-  var data = _taggedTemplateLiteral(["\n    position: relative;\n    width: 100%; \n    ", "\n"]);
+  var data = _taggedTemplateLiteral(["\n    position: relative;\n    width: 100%; \n    ", "\n    display:inline-block;\n"]);
 
   _templateObject34 = function _templateObject34() {
     return data;
@@ -81,7 +81,7 @@ function _templateObject33() {
 }
 
 function _templateObject32() {
-  var data = _taggedTemplateLiteral(["\n    width: 100%;\n    position:relative;\n"]);
+  var data = _taggedTemplateLiteral(["\n    width: 100%;\n    position:relative;\n    ", "\n    &>div { line-height: 0; }\n"]);
 
   _templateObject32 = function _templateObject32() {
     return data;
@@ -484,7 +484,9 @@ export var FormButton = styled.button(_templateObject31(), function (props) {
  * 
  */
 
-export var CellWrap = styled.div(_templateObject32());
+export var CellWrap = styled.div(_templateObject32(), function (props) {
+  return props.padding ? "padding: ".concat(props.padding, ";") : null;
+});
 export var RemoveImageButton = styled(Icon)(_templateObject33());
 export var RenderedTextCellWrap = styled.div(_templateObject34(), function (props) {
   return props.background ? "background: #bbb;" : null;
@@ -504,8 +506,6 @@ export var RenderedCellImage = styled.div(_templateObject38(), function (props) 
   return props.shape == 'round' ? 'border-radius: 50%;' : null;
 });
 export var RenderedTextLine = styled.div(_templateObject39(), function (props) {
-  return props.align == 'none' ? "\n            margin-top: 5px;\n            margin-bottom: 5px;\n        " : null;
-}, function (props) {
   return props.width;
 }, function (props) {
   return props.type == 'header' ? '3rem' : '1rem';

@@ -7,6 +7,7 @@ const fields = {
     image: [
         { type: "text",     label: 'Label',         name: 'label',                                          default: 'IMG'  },
         { type: "text",     label: 'Width (%)',     name: 'width',                                          default: '100'  },
+        { type: "text",     label: 'Padding (css)', name: 'padding',                                        default: '0'    },
         { type: "text",     label: 'Ratio (w:h)',   name: 'ratio',                                          default: '3:2'  },
         { type: "select",   label: 'Align',         name: 'align',     options: ['left', 'center', 'right'],default: 'left' },
         { type: "select",   label: 'Shape',         name: 'shape',     options: ['rect', 'round'],          default: 'rect' },
@@ -14,6 +15,7 @@ const fields = {
     ], 
     text: [
         { type: "text",     label: 'Width (%)',     name: 'width'                                         ,default: '100'   },
+        { type: "text",     label: 'Padding (css)', name: 'padding',                                        default: '0'    },        
         { type: "select",   label: 'Align',         name: 'align',    options: ['left', 'center', 'right'],default: 'left'  },
         { type: "text",     label: 'Lines Number',  name: 'lines'                                         ,default: '3'     },
         { type: "select",   label: 'Columns Number',name: 'columns',  options: ['1','2','3','4','5']      ,default: '1'     },
@@ -21,10 +23,11 @@ const fields = {
         { type: "checkbox", label: 'Background',    name: 'background'                                    ,default: false   }
     ], 
     video: [
-        { type: "text",     label: 'Width (%)',   name: 'width'                                          ,default: '100'  },
-        { type: "text",     label: 'Ratio (w:h)', name: 'ratio'                                          ,default: '3:2', },
-        { type: "select",   label: 'Align',       name: 'align',    options: ['left', 'center', 'right'] ,default: 'left' },
-        { type: "checkbox", label: 'Background',  name: 'background'                                     ,default: false  }
+        { type: "text",     label: 'Width (%)',    name: 'width'                                          ,default: '100'  },
+        { type: "text",     label: 'Padding (css)',name: 'padding',                                        default: '0'    },        
+        { type: "text",     label: 'Ratio (w:h)',  name: 'ratio'                                          ,default: '3:2', },
+        { type: "select",   label: 'Align',        name: 'align',    options: ['left', 'center', 'right'] ,default: 'left' },
+        { type: "checkbox", label: 'Background',   name: 'background'                                     ,default: false  }
     ]
 }
 

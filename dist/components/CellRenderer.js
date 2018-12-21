@@ -47,13 +47,13 @@ var CellRenderer = function CellRenderer(props) {
       ir = props.ir,
       is = props.is; // render
 
-  return React.createElement(CellWrap, {
+  return React.createElement(CellWrap, Object.assign({}, props.cell.params, {
     __source: {
       fileName: _jsxFileName,
       lineNumber: 29
     },
     __self: this
-  }, React.createElement("div", {
+  }), React.createElement("div", {
     onClick: function onClick(e) {
       return openCell(e, ic, ir, is, modifyCell);
     },
@@ -124,10 +124,11 @@ var ImageCell = function ImageCell(props) {
 var TextCell = function TextCell(props) {
   var align = props.align === 'center' ? 'none' : props.align,
       columnSize = 100 / +props.columns;
+  console.log('text pr', props);
   return React.createElement(RenderedTextCellWrap, Object.assign({}, props, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 69
+      lineNumber: 70
     },
     __self: this
   }), Array.from(Array(+props.columns)).map(function (c, j) {
@@ -136,7 +137,7 @@ var TextCell = function TextCell(props) {
       width: columnSize,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 71
+        lineNumber: 72
       },
       __self: this
     }, Array.from(Array(+props.lines)).map(function (l, i) {
@@ -146,13 +147,13 @@ var TextCell = function TextCell(props) {
         align: align,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 73
+          lineNumber: 74
         },
         __self: this
       }), React.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 74
+          lineNumber: 75
         },
         __self: this
       }));
@@ -172,39 +173,39 @@ var VideoCell = function VideoCell(props) {
   return React.createElement(RenderedCellWrap, Object.assign({}, props, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 94
+      lineNumber: 95
     },
     __self: this
   }), React.createElement(HeightHelper, Object.assign({}, props, {
     height: height,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 95
+      lineNumber: 96
     },
     __self: this
   }), React.createElement("span", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 96
+      lineNumber: 97
     },
     __self: this
   })), React.createElement("div", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 98
+      lineNumber: 99
     },
     __self: this
   }, React.createElement(RenderedCellImage, Object.assign({}, props, {
     align: align,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 99
+      lineNumber: 100
     },
     __self: this
   }), React.createElement(RenderedLabel, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 100
+      lineNumber: 101
     },
     __self: this
   }, "VIDEO"))));
