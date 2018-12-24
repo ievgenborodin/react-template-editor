@@ -124,11 +124,10 @@ var ImageCell = function ImageCell(props) {
 var TextCell = function TextCell(props) {
   var align = props.align === 'center' ? 'none' : props.align,
       columnSize = 100 / +props.columns;
-  console.log('text pr', props);
   return React.createElement(RenderedTextCellWrap, Object.assign({}, props, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 70
+      lineNumber: 69
     },
     __self: this
   }), Array.from(Array(+props.columns)).map(function (c, j) {
@@ -137,7 +136,7 @@ var TextCell = function TextCell(props) {
       width: columnSize,
       __source: {
         fileName: _jsxFileName,
-        lineNumber: 72
+        lineNumber: 71
       },
       __self: this
     }, Array.from(Array(+props.lines)).map(function (l, i) {
@@ -147,13 +146,13 @@ var TextCell = function TextCell(props) {
         align: align,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 74
+          lineNumber: 73
         },
         __self: this
       }), React.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 75
+          lineNumber: 74
         },
         __self: this
       }));
@@ -173,39 +172,39 @@ var VideoCell = function VideoCell(props) {
   return React.createElement(RenderedCellWrap, Object.assign({}, props, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 95
+      lineNumber: 94
     },
     __self: this
   }), React.createElement(HeightHelper, Object.assign({}, props, {
     height: height,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 96
+      lineNumber: 95
     },
     __self: this
   }), React.createElement("span", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 97
+      lineNumber: 96
     },
     __self: this
   })), React.createElement("div", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 99
+      lineNumber: 98
     },
     __self: this
   }, React.createElement(RenderedCellImage, Object.assign({}, props, {
     align: align,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 100
+      lineNumber: 99
     },
     __self: this
   }), React.createElement(RenderedLabel, {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 101
+      lineNumber: 100
     },
     __self: this
   }, "VIDEO"))));

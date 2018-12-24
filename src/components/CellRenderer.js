@@ -65,7 +65,6 @@ const ImageCell = (props) => {
 const TextCell = (props) => {
     let align = props.align === 'center' ? 'none' : props.align,
         columnSize = 100 / +props.columns;
-        console.log('text pr', props)
     return (
         <RenderedTextCellWrap {...props}>
             {Array.from(Array(+props.columns)).map((c,j) => 

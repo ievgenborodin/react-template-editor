@@ -56,8 +56,7 @@ function (_Component) {
 
   _createClass(TemplateEditor, [{
     key: "componentDidMount",
-    value: function componentDidMount() {
-      this.toggleReorderMode();
+    value: function componentDidMount() {//        this.toggleReorderMode();
     }
   }, {
     key: "handleSync",

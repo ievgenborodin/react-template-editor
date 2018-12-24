@@ -45,10 +45,6 @@ class Block extends Component {
     }
 
 
-    componentDidMount() {
-        this.sync();
-    }
-
     componentWillReceiveProps(nextProps) {
         if (!this.props.isResizeMode && nextProps.isResizeMode)
             this.setState({                

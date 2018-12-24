@@ -50,7 +50,7 @@ class TemplateEditor extends Component {
     }
 
     componentDidMount() {
-        this.toggleReorderMode();
+//        this.toggleReorderMode();
     }
 
     handleSync (blockId, data) {
