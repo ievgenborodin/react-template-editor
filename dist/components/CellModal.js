@@ -128,8 +128,8 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(CellModal).call(this, props));
     _this.state = {
       tabs: Object.keys(fields),
-      activeTab: props.cell ? props.cell.type : 'text',
-      data: props.cell ? props.cell.params : {}
+      activeTab: props.cell && props.cell.type ? props.cell.type : 'text',
+      data: props.cell && props.cell.params ? props.cell.params : {}
     };
     _this.handleSelect = _this.handleSelect.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.switchTab = _this.switchTab.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -169,7 +169,7 @@ function (_Component) {
       return React.createElement("div", {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 67
+          lineNumber: 66
         },
         __self: this
       }, React.createElement(CloseModal, {
@@ -179,13 +179,13 @@ function (_Component) {
         name: "close",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 68
+          lineNumber: 67
         },
         __self: this
       }), React.createElement(TabsWrap, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 71
+          lineNumber: 70
         },
         __self: this
       }, tabs.map(function (name, i) {
@@ -198,7 +198,7 @@ function (_Component) {
           width: tabSize,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 73
+            lineNumber: 72
           },
           __self: this
         }, name);
@@ -210,7 +210,7 @@ function (_Component) {
         onSubmit: this.handleSelect,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 81
+          lineNumber: 80
         },
         __self: this
       })));

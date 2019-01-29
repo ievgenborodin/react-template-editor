@@ -39,7 +39,8 @@ function (_Component) {
       fields: props.fields,
       data: data,
       errorKeys: [],
-      errors: null
+      errors: null,
+      id: props.cell.id
     };
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -76,9 +77,12 @@ function (_Component) {
     key: "handleSubmit",
     value: function handleSubmit(e) {
       e.preventDefault();
-      var data = this.state.data;
+      var _this$state = this.state,
+          data = _this$state.data,
+          id = _this$state.id;
       if (this.validate(e.currentTarget.dataset.keys.split(','), data)) return false;
       this.props.onSubmit({
+        id: id,
         type: this.props.activeTab,
         params: data
       });
@@ -130,11 +134,11 @@ function (_Component) {
       var _this2 = this;
 
       var theme = this.props.theme;
-      var _this$state = this.state,
-          data = _this$state.data,
-          fields = _this$state.fields,
-          errors = _this$state.errors,
-          isNew = _this$state.isNew;
+      var _this$state2 = this.state,
+          data = _this$state2.data,
+          fields = _this$state2.fields,
+          errors = _this$state2.errors,
+          isNew = _this$state2.isNew;
       var errorKeys = errors ? Object.keys(errors) : [];
       return React.createElement(Form, {
         onSubmit: function onSubmit(e) {
@@ -145,7 +149,7 @@ function (_Component) {
         }).join(','),
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 120
+          lineNumber: 121
         },
         __self: this
       }, fields.map(function (item, f) {
@@ -159,14 +163,14 @@ function (_Component) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 127
+              lineNumber: 128
             },
             __self: this
           }),
           label: item.label,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 124
+            lineNumber: 125
           },
           __self: this
         }) : item.type == 'select' ? React.createElement(FormControl, {
@@ -174,13 +178,13 @@ function (_Component) {
           error: errorKeys.includes(item.name),
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 135
+            lineNumber: 136
           },
           __self: this
         }, React.createElement(InputLabel, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 136
+            lineNumber: 137
           },
           __self: this
         }, item.label), React.createElement(Select, {
@@ -190,7 +194,7 @@ function (_Component) {
           },
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 137
+            lineNumber: 138
           },
           __self: this
         }, item.options.map(function (option, o) {
@@ -199,7 +203,7 @@ function (_Component) {
             value: option,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 142
+              lineNumber: 143
             },
             __self: this
           }, capitalize(option));
@@ -214,34 +218,34 @@ function (_Component) {
           error: errorKeys.includes(item.name),
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 146
+            lineNumber: 147
           },
           __self: this
         });
       }), React.createElement(Spacer, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 157
+          lineNumber: 158
         },
         __self: this
       }), errors ? React.createElement(ErrorText, {
         theme: theme,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 160
+          lineNumber: 161
         },
         __self: this
       }, Object.values(errors)[0], React.createElement(Spacer, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 160
+          lineNumber: 161
         },
         __self: this
       })) : null, React.createElement(Spacer, {
         size: "15px",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 162
+          lineNumber: 163
         },
         __self: this
       }), React.createElement(FormButton, {
@@ -251,7 +255,7 @@ function (_Component) {
         type: "submit",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 164
+          lineNumber: 165
         },
         __self: this
       }, "Save"), isNew ? null : React.createElement(FormButton, {
@@ -260,12 +264,14 @@ function (_Component) {
         onClick: function onClick(e) {
           e.preventDefault();
 
-          _this2.props.onSubmit(null);
+          _this2.props.onSubmit({
+            id: _this2.state.id
+          });
         },
         background: "none",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 167
+          lineNumber: 168
         },
         __self: this
       }, "Delete"));

@@ -166,7 +166,7 @@ class Block extends Component {
             }
         }
         this.setState({resizePointers: pointers})
-        this.props.onSync(blockId, { blockId, columnSizes, columns })
+        this.props.onSync(blockId, { id:blockId, columnSizes, columns })
     }
 
     /** 
@@ -193,7 +193,7 @@ class Block extends Component {
      */
     addRow (columnId) {
         const { columns } = this.state;
-        let columnIndex = columns.indexOf(columnId);
+        let columnIndex = columns.map(col => col.id).indexOf(columnId);
         let nextRowId = getNextRowId(columns[columnIndex].rows);
         this.setState({
             columns: [
@@ -217,17 +217,16 @@ class Block extends Component {
             columnId = [idParts[0], idParts[1], idParts[2]].join('_');
 
         const { columns } = this.state;
-        let columnIndex = columns.indexOf(columnId);
+        let columnIndex = columns.map(col => col.id).indexOf(columnId);
 
         const { rows } = columns[columnIndex];
-        let rowIndex = rows.indexOf(row.id);
+        let rowIndex = rows.map(r => r.id).indexOf(row.id);
         
         const { cells, cellSizes } = rows[rowIndex];
         let cellNumber = cellSizes.length + 1,
             newSize = 100 / cellNumber;
-     
         // get next cell id
-        let nextCellNumber = Math.max(...cells.map( item => item.id.split('_')[5] )) + 1,
+        let nextCellNumber = Math.max(...cells.map( item => item.id.split('_')[4] )) + 1,
             nextCellId = row.id + '_' + nextCellNumber;
 
         this.setState({
@@ -238,6 +237,7 @@ class Block extends Component {
                     rows: [
                         ...rows.slice(0, rowIndex),
                         {
+                            ...rows[rowIndex],
                             cells: side=='left'? [{id: nextCellId}].concat(cells) : cells.concat([{id: nextCellId}]),
                             cellSizes: Array.apply(null, Array(cellNumber)).map(c => newSize)
                         },
@@ -251,7 +251,7 @@ class Block extends Component {
 
 
     /** 
-     * Remove Row
+     * Remove Cell
      * 
      */
     removeCell (columnId, rowId, cellId) {
@@ -390,7 +390,7 @@ class Block extends Component {
                                     {row.cells.map((cell, is) => 
                                         
                                         <Cell key={`row-${ir}-cell-${is}`} size={row.cellSizes[is]} isResizeMode={thisCellResize}>
-                                            {cell.props ? 
+                                            {cell.type ? 
                                                 <CellRenderer {...{ic, ir, is, modifyCell, openCell}} cell={cell} /> 
                                                 : 
                                                 <CreateCellWrap>

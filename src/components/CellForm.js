@@ -27,7 +27,8 @@ class CellForm extends Component {
             fields: props.fields,
             data: data,
             errorKeys: [],
-            errors: null
+            errors: null,
+            id: props.cell.id
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -55,10 +56,10 @@ class CellForm extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const { data } = this.state; 
+        const { data, id } = this.state; 
         if (this.validate(e.currentTarget.dataset.keys.split(','), data))
             return false;
-        this.props.onSubmit({ type: this.props.activeTab, params: data })
+        this.props.onSubmit({ id, type: this.props.activeTab, params: data })
     }
 
     validate(keys, values) {
@@ -164,7 +165,7 @@ class CellForm extends Component {
                 <FormButton theme={theme} capitalize full type="submit">Save</FormButton>
 
                 {isNew ? null : 
-                    <FormButton theme={theme} full onClick={e=>{e.preventDefault(); this.props.onSubmit(null)}} background="none">Delete</FormButton>} 
+                    <FormButton theme={theme} full onClick={e=>{e.preventDefault(); this.props.onSubmit({id: this.state.id})}} background="none">Delete</FormButton>} 
             </Form>
         )
     }

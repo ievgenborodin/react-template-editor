@@ -41,6 +41,7 @@ class TemplateEditor extends Component {
             isResizeMode: false,
             blocks: props.structure || [{id: '_'+this.currId}]
         }
+        console.log('block', props.structure || [{id: '_'+this.currId}])
 
         this.addBlock = this.addBlock.bind(this)
         this.removeBlock = this.removeBlock.bind(this)
@@ -65,6 +66,7 @@ class TemplateEditor extends Component {
         this.setState({
             blocks: newBlocks
         })
+        console.log('new blocks', newBlocks)
         if (this.props.onChange)
             this.props.onChange([...newBlocks]);  
     }
@@ -112,7 +114,7 @@ class TemplateEditor extends Component {
         
                 let children = parent.childNodes;
                 for (let i=0; i<children.length; i++) 
-                    newOrder.push(+children[i].dataset.id);
+                    newOrder.push(children[i].dataset.id);
                 
                 let blocks = self.state.blocks;
 

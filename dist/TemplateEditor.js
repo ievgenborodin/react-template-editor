@@ -37,15 +37,18 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(TemplateEditor).call(this, props));
     _this.currId = props.structure ? Math.max.apply(Math, _toConsumableArray(props.structure.map(function (item) {
-      return item.id;
+      return item.id.split('_')[1];
     }))) : 0;
     _this.state = {
       isReorderMode: false,
       isResizeMode: false,
       blocks: props.structure || [{
-        id: _this.currId
+        id: '_' + _this.currId
       }]
     };
+    console.log('block', props.structure || [{
+      id: '_' + _this.currId
+    }]);
     _this.addBlock = _this.addBlock.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.removeBlock = _this.removeBlock.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleSync = _this.handleSync.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -72,6 +75,7 @@ function (_Component) {
       this.setState({
         blocks: newBlocks
       });
+      console.log('new blocks', newBlocks);
       if (this.props.onChange) this.props.onChange(_toConsumableArray(newBlocks));
     }
     /** 
@@ -126,7 +130,7 @@ function (_Component) {
           var children = parent.childNodes;
 
           for (var i = 0; i < children.length; i++) {
-            newOrder.push(+children[i].dataset.id);
+            newOrder.push(children[i].dataset.id);
           }
 
           var blocks = self.state.blocks;
@@ -183,13 +187,13 @@ function (_Component) {
       return React.createElement(EditorWrap, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 156
+          lineNumber: 158
         },
         __self: this
       }, React.createElement(ToolsWrap, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 157
+          lineNumber: 159
         },
         __self: this
       }, React.createElement(Tool, {
@@ -202,7 +206,7 @@ function (_Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 158
+          lineNumber: 160
         },
         __self: this
       }), React.createElement(Tool, {
@@ -215,14 +219,14 @@ function (_Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 162
+          lineNumber: 164
         },
         __self: this
       })), React.createElement("div", {
         ref: "dragulaWrap",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 168
+          lineNumber: 170
         },
         __self: this
       }, blocks.map(function (block) {
@@ -231,7 +235,7 @@ function (_Component) {
           "data-id": block.id,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 170
+            lineNumber: 172
           },
           __self: this
         }, React.createElement(Block, Object.assign({
@@ -247,24 +251,24 @@ function (_Component) {
           onSync: handleSync,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 171
+            lineNumber: 173
           },
           __self: this
         })));
       })), React.createElement(LocalContainer, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 182
+          lineNumber: 184
         },
         __self: this
       }, React.createElement(AddBlockButton, {
         onClick: function onClick(e) {
-          return addBlock(++_this2.currId);
+          return addBlock('_' + ++_this2.currId);
         },
         name: "down",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 183
+          lineNumber: 185
         },
         __self: this
       })));

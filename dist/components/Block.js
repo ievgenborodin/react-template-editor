@@ -12,6 +12,7 @@ import ModalWrapper from './ModalWrapper';
 import CellModal from './CellModal';
 import CellRenderer from './CellRenderer';
 import { BlockWrap, BlockInner, RemoveBlockButton, ResizerWrap, StyledReactSlider, Ruler, Button, Column, AddColumnButton, Row, AddRowWrap, RemoveRowButton, Cell, CreateCellWrap, AddCellWrap, AddCellButton, CellResizeButton, CellResizerWrap, CellRuler } from './Styled';
+import { getNextColumnId, getNextRowId } from '../helpers';
 
 var Block =
 /*#__PURE__*/
@@ -27,13 +28,12 @@ function (_Component) {
     _this.state = {
       isHover: false,
       resizePointers: [],
-      id: props.blockId,
       columnSizes: props.defaults.columnSizes || [100],
       currentResizeColumn: null,
       currentResizeRow: null,
       cellResizePointers: [],
       isCellResizeMode: false,
-      columns: props.defaults.columns || [_this.initColumn()]
+      columns: props.defaults.columns || [_this.initColumn(props.blockId + '_0')]
     };
     _this.initColumn = _this.initColumn.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.addColumn = _this.addColumn.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -144,16 +144,21 @@ function (_Component) {
     }
   }, {
     key: "initColumn",
-    value: function initColumn() {
+    value: function initColumn(id) {
+      var nextRowId = id + '_0';
       return {
-        rows: [this.initRow()]
+        id: id,
+        rows: [this.initRow(nextRowId)]
       };
     }
   }, {
     key: "initRow",
-    value: function initRow() {
+    value: function initRow(id) {
       return {
-        cells: [null],
+        id: id,
+        cells: [{
+          id: id + '_0'
+        }],
         cellSizes: [100]
       };
     }
@@ -161,9 +166,9 @@ function (_Component) {
     key: "sync",
     value: function sync() {
       var _this$state3 = this.state,
-          id = _this$state3.id,
           columnSizes = _this$state3.columnSizes,
-          columns = _this$state3.columns; // set column bars
+          columns = _this$state3.columns;
+      var blockId = this.props.blockId; // set column bars
 
       var pointersCount = columnSizes.length - 1,
           pointers = [],
@@ -179,8 +184,8 @@ function (_Component) {
       this.setState({
         resizePointers: pointers
       });
-      this.props.onSync(id, {
-        id: id,
+      this.props.onSync(blockId, {
+        id: blockId,
         columnSizes: columnSizes,
         columns: columns
       });
@@ -199,7 +204,7 @@ function (_Component) {
       var columnNumber = columnSizes.length + 1,
           newSize = 100 / columnNumber;
       this.setState({
-        columns: _toConsumableArray(columns).concat([this.initColumn()]),
+        columns: _toConsumableArray(columns).concat([this.initColumn(this.props.blockId + '_' + getNextColumnId(columns))]),
         columnSizes: Array.apply(null, Array(columnNumber)).map(function (c) {
           return newSize;
         })
@@ -214,10 +219,14 @@ function (_Component) {
     key: "addRow",
     value: function addRow(columnId) {
       var columns = this.state.columns;
+      var columnIndex = columns.map(function (col) {
+        return col.id;
+      }).indexOf(columnId);
+      var nextRowId = getNextRowId(columns[columnIndex].rows);
       this.setState({
-        columns: _toConsumableArray(columns.slice(0, columnId)).concat([_objectSpread({}, columns[columnId], {
-          rows: columns[columnId].rows.concat([this.initRow()])
-        })], _toConsumableArray(columns.slice(columnId + 1, columns.length)))
+        columns: _toConsumableArray(columns.slice(0, columnIndex)).concat([_objectSpread({}, columns[columnIndex], {
+          rows: columns[columnIndex].rows.concat([this.initRow(columnId + '_' + nextRowId)])
+        })], _toConsumableArray(columns.slice(columnIndex + 1, columns.length)))
       }, this.sync);
     }
     /** 
@@ -227,27 +236,44 @@ function (_Component) {
 
   }, {
     key: "addCell",
-    value: function addCell(columnId, rowId, side) {
+    value: function addCell(side, row) {
+      var idParts = row.id.split('_'),
+          columnId = [idParts[0], idParts[1], idParts[2]].join('_');
       var columns = this.state.columns;
-      var rows = columns[columnId].rows;
-      var _rows$rowId = rows[rowId],
-          cells = _rows$rowId.cells,
-          cellSizes = _rows$rowId.cellSizes;
+      var columnIndex = columns.map(function (col) {
+        return col.id;
+      }).indexOf(columnId);
+      var rows = columns[columnIndex].rows;
+      var rowIndex = rows.map(function (r) {
+        return r.id;
+      }).indexOf(row.id);
+      var _rows$rowIndex = rows[rowIndex],
+          cells = _rows$rowIndex.cells,
+          cellSizes = _rows$rowIndex.cellSizes;
       var cellNumber = cellSizes.length + 1,
-          newSize = 100 / cellNumber;
+          newSize = 100 / cellNumber; // get next cell id
+
+      var nextCellNumber = Math.max.apply(Math, _toConsumableArray(cells.map(function (item) {
+        return item.id.split('_')[4];
+      }))) + 1,
+          nextCellId = row.id + '_' + nextCellNumber;
       this.setState({
-        columns: _toConsumableArray(columns.slice(0, columnId)).concat([_objectSpread({}, columns[columnId], {
-          rows: _toConsumableArray(rows.slice(0, rowId)).concat([{
-            cells: side == 'left' ? [null].concat(cells) : cells.concat([null]),
+        columns: _toConsumableArray(columns.slice(0, columnIndex)).concat([_objectSpread({}, columns[columnIndex], {
+          rows: _toConsumableArray(rows.slice(0, rowIndex)).concat([_objectSpread({}, rows[rowIndex], {
+            cells: side == 'left' ? [{
+              id: nextCellId
+            }].concat(cells) : cells.concat([{
+              id: nextCellId
+            }]),
             cellSizes: Array.apply(null, Array(cellNumber)).map(function (c) {
               return newSize;
             })
-          }], _toConsumableArray(rows.slice(rowId + 1, rows.length)))
-        })], _toConsumableArray(columns.slice(columnId + 1, columns.length)))
+          })], _toConsumableArray(rows.slice(rowIndex + 1, rows.length)))
+        })], _toConsumableArray(columns.slice(columnIndex + 1, columns.length)))
       }, this.sync);
     }
     /** 
-     * Remove Row
+     * Remove Cell
      * 
      */
 
@@ -258,9 +284,9 @@ function (_Component) {
           columns = _this$state5.columns,
           columnSizes = _this$state5.columnSizes;
       var rows = columns[columnId].rows;
-      var _rows$rowId2 = rows[rowId],
-          cells = _rows$rowId2.cells,
-          cellSizes = _rows$rowId2.cellSizes;
+      var _rows$rowId = rows[rowId],
+          cells = _rows$rowId.cells,
+          cellSizes = _rows$rowId.cellSizes;
       var newColumn = [],
           newColumnSizes,
           newColumnSize;
@@ -325,7 +351,7 @@ function (_Component) {
           onSelect: callback,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 302
+            lineNumber: 324
           },
           __self: this
         }))
@@ -397,20 +423,20 @@ function (_Component) {
         },
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 352
+          lineNumber: 374
         },
         __self: this
       }, React.createElement(BlockInner, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 355
+          lineNumber: 377
         },
         __self: this
       }, React.createElement(Ruler, {
         active: isResizeMode,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 356
+          lineNumber: 378
         },
         __self: this
       }), React.createElement(AddColumnButton, {
@@ -420,7 +446,7 @@ function (_Component) {
         name: "right",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 357
+          lineNumber: 379
         },
         __self: this
       }), React.createElement(RemoveBlockButton, {
@@ -431,7 +457,7 @@ function (_Component) {
         name: "remove",
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 358
+          lineNumber: 380
         },
         __self: this
       }), columns.map(function (col, ic) {
@@ -442,7 +468,7 @@ function (_Component) {
           isResizeMode: isResizeMode,
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 362
+            lineNumber: 384
           },
           __self: this
         }, rows.map(function (row, ir) {
@@ -452,7 +478,7 @@ function (_Component) {
             key: "row-".concat(ir),
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 367
+              lineNumber: 389
             },
             __self: this
           }, row.cells.map(function (cell, is) {
@@ -462,10 +488,10 @@ function (_Component) {
               isResizeMode: thisCellResize,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 370
+                lineNumber: 392
               },
               __self: this
-            }, cell ? React.createElement(CellRenderer, Object.assign({
+            }, cell.type ? React.createElement(CellRenderer, Object.assign({
               ic: ic,
               ir: ir,
               is: is,
@@ -475,13 +501,13 @@ function (_Component) {
               cell: cell,
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 372
+                lineNumber: 394
               },
               __self: this
             })) : React.createElement(CreateCellWrap, {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 374
+                lineNumber: 396
               },
               __self: this
             }, !isLastCell && !thisCellResize ? React.createElement(RemoveRowButton, {
@@ -493,7 +519,7 @@ function (_Component) {
               name: "remove",
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 376
+                lineNumber: 398
               },
               __self: this
             }) : null, thisCellResize ? null : React.createElement("span", {
@@ -502,39 +528,39 @@ function (_Component) {
               },
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 379
+                lineNumber: 401
               },
               __self: this
             }, React.createElement("span", {
               __source: {
                 fileName: _jsxFileName,
-                lineNumber: 380
+                lineNumber: 402
               },
               __self: this
             }, "+"))));
           }), thisCellResize && cellLocalPointers.length && cellLocalPointers[0] ? React.createElement(Fragment, {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 388
+              lineNumber: 410
             },
             __self: this
           }, React.createElement(CellRuler, {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 389
+              lineNumber: 411
             },
             __self: this
           }, React.createElement(Ruler, {
             active: thisCellResize,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 390
+              lineNumber: 412
             },
             __self: this
           })), React.createElement(CellResizerWrap, {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 392
+              lineNumber: 414
             },
             __self: this
           }, React.createElement(StyledReactSlider, {
@@ -547,7 +573,7 @@ function (_Component) {
             withBars: true,
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 393
+              lineNumber: 415
             },
             __self: this
           }))) : null, row.cells.length > 1 ? React.createElement(CellResizeButton, {
@@ -558,48 +584,46 @@ function (_Component) {
             },
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 399
+              lineNumber: 421
             },
             __self: this
           }) : null, React.createElement(AddCell, Object.assign({
             side: "left"
           }, {
-            ic: ic,
-            ir: ir,
-            addCell: addCell
+            addCell: addCell,
+            row: row
           }, {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 401
+              lineNumber: 423
             },
             __self: this
           })), React.createElement(AddCell, Object.assign({
             side: "right"
           }, {
-            ic: ic,
-            ir: ir,
-            addCell: addCell
+            addCell: addCell,
+            row: row
           }, {
             __source: {
               fileName: _jsxFileName,
-              lineNumber: 402
+              lineNumber: 424
             },
             __self: this
           })));
         }), React.createElement(AddRow, Object.assign({
-          ic: ic,
-          addRow: addRow
+          addRow: addRow,
+          id: col.id
         }, {
           __source: {
             fileName: _jsxFileName,
-            lineNumber: 405
+            lineNumber: 427
           },
           __self: this
         })));
       }), isResizeMode && localPointers.length && localPointers[0] ? React.createElement(ResizerWrap, {
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 410
+          lineNumber: 432
         },
         __self: this
       }, React.createElement(StyledReactSlider, {
@@ -612,7 +636,7 @@ function (_Component) {
         withBars: true,
         __source: {
           fileName: _jsxFileName,
-          lineNumber: 411
+          lineNumber: 433
         },
         __self: this
       })) : null));
@@ -629,24 +653,24 @@ var AddRow = function AddRow(props) {
     className: "column-hover",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 425
+      lineNumber: 447
     },
     __self: this
   }, React.createElement(Button, {
     onClick: function onClick(e) {
-      props.addRow(props.ic);
+      props.addRow(props.id);
     },
     title: "Add Row",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 426
+      lineNumber: 448
     },
     __self: this
   }, React.createElement(AddCellButton, {
     name: "down",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 426
+      lineNumber: 448
     },
     __self: this
   })));
@@ -658,24 +682,24 @@ var AddCell = function AddCell(props) {
     className: "column-hover",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 433
+      lineNumber: 455
     },
     __self: this
   }, React.createElement(Button, {
     onClick: function onClick(e) {
-      props.addCell(props.ic, props.ir, props.side);
+      props.addCell(props.side, props.row);
     },
     title: "Add Cell",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 434
+      lineNumber: 456
     },
     __self: this
   }, React.createElement(AddCellButton, {
     name: props.side,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 434
+      lineNumber: 456
     },
     __self: this
   })));

@@ -38,10 +38,9 @@ class CellModal extends Component {
         
         this.state = {
             tabs: Object.keys(fields),
-            activeTab: props.cell ? props.cell.type : 'text',
-            data: props.cell ? props.cell.params : {}
+            activeTab: (props.cell && props.cell.type) ? props.cell.type : 'text',
+            data: (props.cell && props.cell.params) ? props.cell.params : {}
         }        
-
         this.handleSelect = this.handleSelect.bind(this)
         this.switchTab = this.switchTab.bind(this)
     }
