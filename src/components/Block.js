@@ -6,6 +6,7 @@ import { BlockWrap, BlockInner, RemoveBlockButton,  ResizerWrap, StyledReactSlid
          Column, AddColumnButton,
          Row, AddRowWrap,  RemoveRowButton, 
          Cell,  CreateCellWrap,  AddCellWrap, AddCellButton, CellResizeButton, CellResizerWrap, CellRuler } from './Styled'
+import { getNextColumnId, getNextRowId } from '../helpers' 
 
 class Block extends Component {
     constructor(props) {
@@ -14,7 +15,6 @@ class Block extends Component {
         this.state = {
             isHover: false,
             resizePointers: [],
-            id: props.blockId,
             columnSizes: props.defaults.columnSizes || [ 100 ],
             
             currentResizeColumn: null,
@@ -22,7 +22,7 @@ class Block extends Component {
             cellResizePointers: [],
             isCellResizeMode: false,
             
-            columns: props.defaults.columns || [ this.initColumn() ]
+            columns: props.defaults.columns || [ this.initColumn(props.blockId + '_0') ]
         }
 
         this.initColumn = this.initColumn.bind(this)
@@ -132,22 +132,30 @@ class Block extends Component {
 
 
 
-    initColumn() {
+    initColumn(id) {
+        let nextRowId = id + '_0';
         return {
-            rows: [ this.initRow() ]
+            id: id,
+            rows: [ this.initRow(nextRowId) ]
         }
     }
 
-    initRow() {
+    initRow(id) {
         return {
-            cells: [ null ],
+            id: id,
+            cells: [ 
+                {
+                    id: id + '_0'
+                } 
+            ],
             cellSizes: [ 100 ]
         }
     }
 
     sync() {
-        const { id, columnSizes, columns } = this.state;
-        
+        const { columnSizes, columns } = this.state;
+        const { blockId } = this.props;
+
         // set column bars
         let pointersCount = columnSizes.length - 1,
            pointers = [], summer = 0;
@@ -158,7 +166,7 @@ class Block extends Component {
             }
         }
         this.setState({resizePointers: pointers})
-        this.props.onSync(id, { id, columnSizes, columns })
+        this.props.onSync(blockId, { blockId, columnSizes, columns })
     }
 
     /** 
@@ -172,11 +180,12 @@ class Block extends Component {
         this.setState({
             columns: [
                 ...columns, 
-                this.initColumn()
+                this.initColumn(this.props.blockId + '_' + getNextColumnId(columns))
             ],
             columnSizes: Array.apply(null, Array(columnNumber)).map(c => newSize)
         },this.sync)
     }
+
 
     /** 
      * Add Row
@@ -184,14 +193,16 @@ class Block extends Component {
      */
     addRow (columnId) {
         const { columns } = this.state;
+        let columnIndex = columns.indexOf(columnId);
+        let nextRowId = getNextRowId(columns[columnIndex].rows);
         this.setState({
             columns: [
-                ...columns.slice(0, columnId),
+                ...columns.slice(0, columnIndex),
                 {
-                    ...columns[columnId],
-                    rows: columns[columnId].rows.concat([this.initRow()])
+                    ...columns[columnIndex],
+                    rows: columns[columnIndex].rows.concat([this.initRow(columnId + '_' + nextRowId)])
                 },
-                ...columns.slice(columnId+1, columns.length)
+                ...columns.slice(columnIndex+1, columns.length)
             ]
         },this.sync)
     }
@@ -201,28 +212,39 @@ class Block extends Component {
      * Add Cell
      * 
      */
-    addCell (columnId, rowId, side) {
+    addCell (side, row) {
+        let idParts = row.id.split('_'),
+            columnId = [idParts[0], idParts[1], idParts[2]].join('_');
+
         const { columns } = this.state;
-        const { rows } = columns[columnId];
-        const { cells, cellSizes } = rows[rowId];
+        let columnIndex = columns.indexOf(columnId);
+
+        const { rows } = columns[columnIndex];
+        let rowIndex = rows.indexOf(row.id);
+        
+        const { cells, cellSizes } = rows[rowIndex];
         let cellNumber = cellSizes.length + 1,
             newSize = 100 / cellNumber;
      
+        // get next cell id
+        let nextCellNumber = Math.max(...cells.map( item => item.id.split('_')[5] )) + 1,
+            nextCellId = row.id + '_' + nextCellNumber;
+
         this.setState({
             columns: [
-                ...columns.slice(0, columnId), 
+                ...columns.slice(0, columnIndex), 
                 {
-                    ...columns[columnId],
+                    ...columns[columnIndex],
                     rows: [
-                        ...rows.slice(0, rowId),
+                        ...rows.slice(0, rowIndex),
                         {
-                            cells: side=='left'? [null].concat(cells) : cells.concat([null]),
+                            cells: side=='left'? [{id: nextCellId}].concat(cells) : cells.concat([{id: nextCellId}]),
                             cellSizes: Array.apply(null, Array(cellNumber)).map(c => newSize)
                         },
-                        ...rows.slice(rowId+1, rows.length)
+                        ...rows.slice(rowIndex+1, rows.length)
                     ]
                 },
-                ...columns.slice(columnId+1, columns.length)
+                ...columns.slice(columnIndex+1, columns.length)
             ]
         },this.sync)
     }
@@ -368,7 +390,7 @@ class Block extends Component {
                                     {row.cells.map((cell, is) => 
                                         
                                         <Cell key={`row-${ir}-cell-${is}`} size={row.cellSizes[is]} isResizeMode={thisCellResize}>
-                                            {cell ? 
+                                            {cell.props ? 
                                                 <CellRenderer {...{ic, ir, is, modifyCell, openCell}} cell={cell} /> 
                                                 : 
                                                 <CreateCellWrap>
@@ -398,11 +420,11 @@ class Block extends Component {
                                     {row.cells.length>1 ? 
                                     <CellResizeButton active={thisCellResize} name="resize" onClick={e=>{this.toggleCellsResize(ic, ir)}}/>:null}
 
-                                    <AddCell side="left" {...{ic, ir, addCell}} />
-                                    <AddCell side="right" {...{ic, ir, addCell}} />
+                                    <AddCell side="left" {...{addCell, row}} />
+                                    <AddCell side="right" {...{addCell, row}} />
                                 </Row>
                             )})}
-                            <AddRow {...{ic, addRow}} />
+                            <AddRow {...{addRow, id: col.id}} />
                         </Column>
                     )
                 })}
@@ -423,7 +445,7 @@ export default ModalWrapper(Block)
 const AddRow = (props) => {
     return (
         <AddRowWrap className="column-hover">
-            <Button onClick={e => {props.addRow(props.ic)}} title="Add Row"><AddCellButton name="down"/></Button>
+            <Button onClick={e => {props.addRow(props.id)}} title="Add Row"><AddCellButton name="down"/></Button>
         </AddRowWrap>
     )
 }
@@ -431,7 +453,7 @@ const AddRow = (props) => {
 const AddCell = (props) => {
     return (
         <AddCellWrap side={props.side} className="column-hover">
-            <Button onClick={e => {props.addCell(props.ic, props.ir, props.side)}} title="Add Cell"><AddCellButton name={props.side}/></Button>
+            <Button onClick={e => {props.addCell(props.side, props.row)}} title="Add Cell"><AddCellButton name={props.side}/></Button>
         </AddCellWrap>
     )
 }

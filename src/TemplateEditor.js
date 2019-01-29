@@ -34,12 +34,12 @@ class TemplateEditor extends Component {
     constructor(props) {
         super(props)
 
-        this.currId = props.structure ? Math.max(...props.structure.map(item => item.id)) : 0;        
+        this.currId = props.structure ? Math.max(...props.structure.map( item => item.id.split('_')[1] )) : 0;        
         
         this.state = {
             isReorderMode: false,
             isResizeMode: false,
-            blocks: props.structure || [{id: this.currId}]
+            blocks: props.structure || [{id: '_'+this.currId}]
         }
 
         this.addBlock = this.addBlock.bind(this)
@@ -180,7 +180,7 @@ class TemplateEditor extends Component {
                 </div>
 
                 <LocalContainer>
-                    <AddBlockButton onClick={e=> addBlock(++this.currId)} name="down"/>                    
+                    <AddBlockButton onClick={e=> addBlock('_'+(++this.currId))} name="down"/>                    
                 </LocalContainer>
             </EditorWrap>
         )
